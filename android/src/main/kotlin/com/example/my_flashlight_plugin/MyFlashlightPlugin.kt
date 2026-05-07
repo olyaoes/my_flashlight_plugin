@@ -12,7 +12,7 @@ import io.flutter.plugin.common.MethodChannel.Result
 class MyFlashlightPlugin: FlutterPlugin, MethodCallHandler {
   private lateinit var channel : MethodChannel
   private lateinit var context: Context
-  private var isTorchOn: Boolean = false 
+  private var isTorchOn = false
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "my_flashlight_plugin")
@@ -23,15 +23,13 @@ class MyFlashlightPlugin: FlutterPlugin, MethodCallHandler {
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
     if (call.method == "toggleLight") {
       try {
-        val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
-        val cameraId = cameraManager.cameraIdList[0] 
-        
-        isTorchOn = !isTorchOn 
-        cameraManager.setTorchMode(cameraId, isTorchOn) 
-        
-        result.success(null) 
+          val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+          val cameraId = cameraManager.cameraIdList[0]
+          isTorchOn = !isTorchOn
+          cameraManager.setTorchMode(cameraId, isTorchOn)
+          result.success(null)
       } catch (e: Exception) {
-        result.error("CAMERA_ERROR", e.message, null)
+          result.error("CAMERA_ERROR", e.message, null)
       }
     } else {
       result.notImplemented()
